@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Agent - Your AI Financial Coach</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-shadow {
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .chat-bubble {
+            animation: fadeInUp 0.3s ease-out;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="gradient-bg text-white p-4">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <i class="fas fa-robot text-2xl"></i>
+                <h1 class="text-xl font-bold">Financial Agent</h1>
+            </div>
+            <button id="menuBtn" class="text-white">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-6 max-w-md">
+        <!-- Dashboard Overview -->
+        <div class="mb-6">
+            <div class="bg-white rounded-lg card-shadow p-6 mb-4">
+                <h2 class="text-lg font-semibold mb-4 text-gray-800">Financial Overview</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-green-600" id="currentBalance">₹0</div>
+                        <div class="text-sm text-gray-600">Current Balance</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-blue-600" id="savings">₹0</div>
+                        <div class="text-sm text-gray-600">Total Savings</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cash Flow Prediction -->
+            <div class="bg-white rounded-lg card-shadow p-6 mb-4">
+                <h3 class="text-lg font-semibold mb-3 text-gray-800">Cash Flow Forecast</h3>
+                <div class="mb-3">
+                    <div class="flex justify-between text-sm mb-1">
+                        <span>Risk Level</span>
+                        <span id="riskLevel" class="font-semibold">Low</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div id="riskBar" class="bg-green-500 h-2 rounded-full" style="width: 20%"></div>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div id="forecastMessage">Your cash flow looks stable for the next 7 days.</div>
+                </div>
+            </div>
+
+            <!-- Active Nudges -->
+            <div class="bg-white rounded-lg card-shadow p-6 mb-4" id="nudgesSection">
+                <h3 class="text-lg font-semibold mb-3 text-gray-800">Financial Insights</h3>
+                <div id="nudgesList">
+                    <div class="text-gray-500 text-sm">No active insights at the moment.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="bg-white rounded-lg card-shadow p-6 mb-6">
+            <h3 class="text-lg font-semibold mb-4 text-gray-800">Quick Actions</h3>
+            <div class="grid grid-cols-2 gap-4">
+                <button id="addTransactionBtn" class="bg-blue-500 text-white p-4 rounded-lg text-center hover:bg-blue-600 transition-colors">
+                    <i class="fas fa-plus text-xl mb-2 block"></i>
+                    Add Transaction
+                </button>
+                <button id="viewSavingsBtn" class="bg-green-500 text-white p-4 rounded-lg text-center hover:bg-green-600 transition-colors">
+                    <i class="fas fa-piggy-bank text-xl mb-2 block"></i>
+                    View Savings
+                </button>
+                <button id="predictionsBtn" class="bg-purple-500 text-white p-4 rounded-lg text-center hover:bg-purple-600 transition-colors">
+                    <i class="fas fa-chart-line text-xl mb-2 block"></i>
+                    Predictions
+                </button>
+                <button id="settingsBtn" class="bg-gray-500 text-white p-4 rounded-lg text-center hover:bg-gray-600 transition-colors">
+                    <i class="fas fa-cog text-xl mb-2 block"></i>
+                    Settings
+                </button>
+            </div>
+        </div>
+
+        <!-- Chat Interface -->
+        <div class="bg-white rounded-lg card-shadow p-6">
+            <h3 class="text-lg font-semibold mb-4 text-gray-800">AI Assistant</h3>
+            <div id="chatMessages" class="space-y-3 mb-4 max-h-64 overflow-y-auto">
+                <div class="chat-bubble">
+                    <div class="bg-blue-100 p-3 rounded-lg">
+                        <div class="flex items-start space-x-2">
+                            <i class="fas fa-robot text-blue-500 mt-1"></i>
+                            <div>
+                                <div class="text-sm text-gray-800">Hello! I'm your financial AI assistant. How can I help you today?</div>
+                                <div class="text-xs text-gray-500 mt-1">Just now</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex space-x-2">
+                <input type="text" id="chatInput" placeholder="Ask me about your finances..." 
+                       class="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button id="sendBtn" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal for Add Transaction -->
+    <div id="transactionModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 w-full max-w-md mx-4">
+            <h3 class="text-lg font-semibold mb-4">Add Transaction</h3>
+            <form id="transactionForm">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Amount</label>
+                    <input type="number" id="amount" required 
+                           class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Type</label>
+                    <select id="transactionType" required 
+                            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="">Select type</option>
+                        <option value="income">Income</option>
+                        <option value="expense">Expense</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                    <select id="category" required 
+                            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="">Select category</option>
+                        <option value="salary">Salary</option>
+                        <option value="gig_income">Gig Income</option>
+                        <option value="groceries">Groceries</option>
+                        <option value="transport">Transport</option>
+                        <option value="entertainment">Entertainment</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                    <input type="text" id="description" 
+                           class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="flex space-x-3">
+                    <button type="submit" class="flex-1 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                        Add Transaction
+                    </button>
+                    <button type="button" id="closeModal" class="flex-1 bg-gray-500 text-white py-2 rounded-lg hover:bg-gray-600 transition-colors">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="./js/app.js"></script>
+</body>
+</html>
