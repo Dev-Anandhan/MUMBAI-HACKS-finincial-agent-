@@ -42,7 +42,7 @@ An autonomous, privacy-first financial coaching agent designed specifically for 
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Python 3.8+
+- Python 3.13 // chnaged the depencey for upgrade 
 - Node.js 16+
 - Firebase project setup
 
